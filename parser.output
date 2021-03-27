@@ -1,0 +1,2047 @@
+Terminals unused in grammar
+
+   PRINT_INT
+   PRINT_STRING
+   PRINT_FLOAT
+   TOKEN_COL
+   IO_VAR
+   EOL
+
+
+Stato 4 23 riduzione/riduzione
+Stato 15 11 conflitti shift/riduzione
+Stato 51 1 conflitti shift/riduzione
+Stato 52 1 conflitti shift/riduzione
+
+
+Grammatica
+
+    0 $accept: root $end
+
+    1 root: function
+
+    2 function: function statements
+    3         | %empty
+
+    4 statements: statements statement
+    5           | statement
+
+    6 statement: expression
+    7          | forStm
+    8          | ifStm
+    9          | scanStm
+   10          | printStm
+
+   11 expression: expression TOKEN_ADD term
+   12           | expression TOKEN_SUB term
+   13           | term
+   14           | condition
+   15           | init
+   16           | NAME
+   17           | assign
+
+   18 term: term TOKEN_MUL factor
+   19     | term TOKEN_DIV factor
+   20     | factor
+
+   21 factor: LB expression RB
+   22       | INTEGER
+   23       | FLOAT
+   24       | NAME
+   25       | NAME LSB NAME RSB
+   26       | NAME LSB INTEGER RSB
+
+   27 condition: expression GT expression
+   28          | expression EQ expression
+   29          | expression GE expression
+   30          | expression LE expression
+   31          | expression LT expression
+   32          | expression NE expression
+
+   33 forStm: FOR LB assign expression TOKEN_SEM forIncrement RB block
+
+   34 assign: NAME TOKEN_ASS INTEGER TOKEN_SEM
+   35       | NAME TOKEN_ASS FLOAT TOKEN_SEM
+   36       | NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM
+   37       | NAME TOKEN_ASS castingFunc TOKEN_SEM
+   38       | NAME TOKEN_ASS expression TOKEN_SEM
+
+   39 init: INT_TOKEN NAME TOKEN_ASS expression TOKEN_SEM
+   40     | INT_TOKEN NAME TOKEN_SEM
+   41     | INT_TOKEN NAME LSB INTEGER RSB TOKEN_SEM
+   42     | CHAR_TOKEN TOKEN_MUL NAME TOKEN_SEM
+   43     | CHAR_TOKEN TOKEN_MUL NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM
+   44     | FLOAT_TOKEN NAME TOKEN_ASS FLOAT TOKEN_SEM
+   45     | FLOAT_TOKEN NAME TOKEN_SEM
+
+   46 forIncrement: NAME TOKEN_ADD TOKEN_ADD
+
+   47 block: LCB statements RCB
+
+   48 ifStm: IF LB condition RB block
+   49      | IF LB condition RB block ELSE IF LB condition RB block
+   50      | IF LB condition RB block ELSE block
+
+   51 printStm: PRINT LB printStr outTail TOKEN_SEM
+
+   52 printStr: STRING_TOKEN
+   53         | TOKEN_QUO IO_INT TOKEN_QUO
+   54         | TOKEN_QUO IO_STRING TOKEN_QUO
+   55         | TOKEN_QUO IO_FLOAT TOKEN_QUO
+
+   56 outTail: RB
+   57        | TOKEN_COM NAME RB
+   58        | TOKEN_COM NAME LSB NAME RSB RB
+   59        | TOKEN_COM NAME LSB INTEGER RSB RB
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   61        | SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   62        | SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+   64 castingFunc: LB INT_TOKEN RB NAME
+   65            | LB FLOAT_TOKEN RB NAME
+
+
+Simboli terminali e regole in cui appaiono
+
+$end (0) 0
+error (256)
+NAME (258) 16 24 25 26 34 35 36 37 38 39 40 41 42 43 44 45 46 57 58
+    59 60 61 62 63 64 65
+STRING_TOKEN (259) 36 43 52
+INTEGER (260) 22 26 34 41 59
+FLOAT (261) 23 35 44
+LB (262) 21 33 48 49 50 51 60 61 62 63 64 65
+RB (263) 21 33 48 49 50 56 57 58 59 60 61 62 63 64 65
+LSB (264) 25 26 41 58 59 63
+RSB (265) 25 26 41 58 59 63
+LCB (266) 47
+RCB (267) 47
+PRINT (268) 51
+SCAN (269) 60 61 62 63
+PRINT_INT (270)
+PRINT_STRING (271)
+PRINT_FLOAT (272)
+INT_TOKEN (273) 39 40 41 64
+CHAR_TOKEN (274) 42 43
+FLOAT_TOKEN (275) 44 45 65
+TOKEN_COL (276)
+TOKEN_COM (277) 57 58 59 60 61 62 63
+TOKEN_SEM (278) 33 34 35 36 37 38 39 40 41 42 43 44 45 51 60 61 62
+    63
+TOKEN_QUO (279) 53 54 55 60 61 62 63
+TOKEN_E (280) 60 61 62 63
+IO_VAR (281)
+EOL (282)
+FOR (283) 33
+IO_FLOAT (284) 55 62
+IO_INT (285) 53 60 63
+IO_STRING (286) 54 61
+IF (287) 48 49 50
+ELSE (288) 49 50
+GT (289) 27
+LT (290) 31
+NE (291) 32
+EQ (292) 28
+GE (293) 29
+LE (294) 30
+TOKEN_ASS (295) 34 35 36 37 38 39 43 44
+TOKEN_ADD (296) 11 46
+TOKEN_SUB (297) 12
+TOKEN_MUL (298) 18 42 43
+TOKEN_DIV (299) 19
+
+
+Simboli nonterminali e regole in cui appaiono
+
+$accept (45)
+    nel primo membro: 0
+root (46)
+    nel primo membro: 1, nel secondo membro: 0
+function (47)
+    nel primo membro: 2 3, nel secondo membro: 1 2
+statements (48)
+    nel primo membro: 4 5, nel secondo membro: 2 4 47
+statement (49)
+    nel primo membro: 6 7 8 9 10, nel secondo membro: 4 5
+expression (50)
+    nel primo membro: 11 12 13 14 15 16 17, nel secondo membro: 6 11
+    12 21 27 28 29 30 31 32 33 38 39
+term (51)
+    nel primo membro: 18 19 20, nel secondo membro: 11 12 13 18 19
+factor (52)
+    nel primo membro: 21 22 23 24 25 26, nel secondo membro: 18 19
+    20
+condition (53)
+    nel primo membro: 27 28 29 30 31 32, nel secondo membro: 14 48
+    49 50
+forStm (54)
+    nel primo membro: 33, nel secondo membro: 7
+assign (55)
+    nel primo membro: 34 35 36 37 38, nel secondo membro: 17 33
+init (56)
+    nel primo membro: 39 40 41 42 43 44 45, nel secondo membro: 15
+forIncrement (57)
+    nel primo membro: 46, nel secondo membro: 33
+block (58)
+    nel primo membro: 47, nel secondo membro: 33 48 49 50
+ifStm (59)
+    nel primo membro: 48 49 50, nel secondo membro: 8
+printStm (60)
+    nel primo membro: 51, nel secondo membro: 10
+printStr (61)
+    nel primo membro: 52 53 54 55, nel secondo membro: 51
+outTail (62)
+    nel primo membro: 56 57 58 59, nel secondo membro: 51
+scanStm (63)
+    nel primo membro: 60 61 62 63, nel secondo membro: 9
+castingFunc (64)
+    nel primo membro: 64 65, nel secondo membro: 37
+
+
+Stato 0
+
+    0 $accept: . root $end
+
+    $default  riduzione con la regola 3 (function)
+
+    root      prosecuzione allo stato 1
+    function  prosecuzione allo stato 2
+
+
+Stato 1
+
+    0 $accept: root . $end
+
+    $end  shift e prosecuzione allo stato 3
+
+
+Stato 2
+
+    1 root: function .
+    2 function: function . statements
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    PRINT        shift e prosecuzione allo stato 8
+    SCAN         shift e prosecuzione allo stato 9
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+    FOR          shift e prosecuzione allo stato 13
+    IF           shift e prosecuzione allo stato 14
+
+    $default  riduzione con la regola 1 (root)
+
+    statements  prosecuzione allo stato 15
+    statement   prosecuzione allo stato 16
+    expression  prosecuzione allo stato 17
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    forStm      prosecuzione allo stato 21
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+    ifStm       prosecuzione allo stato 24
+    printStm    prosecuzione allo stato 25
+    scanStm     prosecuzione allo stato 26
+
+
+Stato 3
+
+    0 $accept: root $end .
+
+    $default  accetta
+
+
+Stato 4
+
+   16 expression: NAME .
+   24 factor: NAME .
+   25       | NAME . LSB NAME RSB
+   26       | NAME . LSB INTEGER RSB
+   34 assign: NAME . TOKEN_ASS INTEGER TOKEN_SEM
+   35       | NAME . TOKEN_ASS FLOAT TOKEN_SEM
+   36       | NAME . TOKEN_ASS STRING_TOKEN TOKEN_SEM
+   37       | NAME . TOKEN_ASS castingFunc TOKEN_SEM
+   38       | NAME . TOKEN_ASS expression TOKEN_SEM
+
+    LSB        shift e prosecuzione allo stato 27
+    TOKEN_ASS  shift e prosecuzione allo stato 28
+
+    $end         riduzione con la regola 16 (expression)
+    $end         [riduzione con la regola 24 (factor)]
+    NAME         riduzione con la regola 16 (expression)
+    NAME         [riduzione con la regola 24 (factor)]
+    INTEGER      riduzione con la regola 16 (expression)
+    INTEGER      [riduzione con la regola 24 (factor)]
+    FLOAT        riduzione con la regola 16 (expression)
+    FLOAT        [riduzione con la regola 24 (factor)]
+    LB           riduzione con la regola 16 (expression)
+    LB           [riduzione con la regola 24 (factor)]
+    RB           riduzione con la regola 16 (expression)
+    RB           [riduzione con la regola 24 (factor)]
+    RCB          riduzione con la regola 16 (expression)
+    RCB          [riduzione con la regola 24 (factor)]
+    PRINT        riduzione con la regola 16 (expression)
+    PRINT        [riduzione con la regola 24 (factor)]
+    SCAN         riduzione con la regola 16 (expression)
+    SCAN         [riduzione con la regola 24 (factor)]
+    INT_TOKEN    riduzione con la regola 16 (expression)
+    INT_TOKEN    [riduzione con la regola 24 (factor)]
+    CHAR_TOKEN   riduzione con la regola 16 (expression)
+    CHAR_TOKEN   [riduzione con la regola 24 (factor)]
+    FLOAT_TOKEN  riduzione con la regola 16 (expression)
+    FLOAT_TOKEN  [riduzione con la regola 24 (factor)]
+    TOKEN_SEM    riduzione con la regola 16 (expression)
+    TOKEN_SEM    [riduzione con la regola 24 (factor)]
+    FOR          riduzione con la regola 16 (expression)
+    FOR          [riduzione con la regola 24 (factor)]
+    IF           riduzione con la regola 16 (expression)
+    IF           [riduzione con la regola 24 (factor)]
+    GT           riduzione con la regola 16 (expression)
+    GT           [riduzione con la regola 24 (factor)]
+    LT           riduzione con la regola 16 (expression)
+    LT           [riduzione con la regola 24 (factor)]
+    NE           riduzione con la regola 16 (expression)
+    NE           [riduzione con la regola 24 (factor)]
+    EQ           riduzione con la regola 16 (expression)
+    EQ           [riduzione con la regola 24 (factor)]
+    GE           riduzione con la regola 16 (expression)
+    GE           [riduzione con la regola 24 (factor)]
+    LE           riduzione con la regola 16 (expression)
+    LE           [riduzione con la regola 24 (factor)]
+    TOKEN_ADD    riduzione con la regola 16 (expression)
+    TOKEN_ADD    [riduzione con la regola 24 (factor)]
+    TOKEN_SUB    riduzione con la regola 16 (expression)
+    TOKEN_SUB    [riduzione con la regola 24 (factor)]
+    TOKEN_MUL    riduzione con la regola 24 (factor)
+    TOKEN_DIV    riduzione con la regola 24 (factor)
+    $default     riduzione con la regola 16 (expression)
+
+
+Stato 5
+
+   22 factor: INTEGER .
+
+    $default  riduzione con la regola 22 (factor)
+
+
+Stato 6
+
+   23 factor: FLOAT .
+
+    $default  riduzione con la regola 23 (factor)
+
+
+Stato 7
+
+   21 factor: LB . expression RB
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 29
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 8
+
+   51 printStm: PRINT . LB printStr outTail TOKEN_SEM
+
+    LB  shift e prosecuzione allo stato 30
+
+
+Stato 9
+
+   60 scanStm: SCAN . LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   61        | SCAN . LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   62        | SCAN . LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN . LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    LB  shift e prosecuzione allo stato 31
+
+
+Stato 10
+
+   39 init: INT_TOKEN . NAME TOKEN_ASS expression TOKEN_SEM
+   40     | INT_TOKEN . NAME TOKEN_SEM
+   41     | INT_TOKEN . NAME LSB INTEGER RSB TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 32
+
+
+Stato 11
+
+   42 init: CHAR_TOKEN . TOKEN_MUL NAME TOKEN_SEM
+   43     | CHAR_TOKEN . TOKEN_MUL NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM
+
+    TOKEN_MUL  shift e prosecuzione allo stato 33
+
+
+Stato 12
+
+   44 init: FLOAT_TOKEN . NAME TOKEN_ASS FLOAT TOKEN_SEM
+   45     | FLOAT_TOKEN . NAME TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 34
+
+
+Stato 13
+
+   33 forStm: FOR . LB assign expression TOKEN_SEM forIncrement RB block
+
+    LB  shift e prosecuzione allo stato 35
+
+
+Stato 14
+
+   48 ifStm: IF . LB condition RB block
+   49      | IF . LB condition RB block ELSE IF LB condition RB block
+   50      | IF . LB condition RB block ELSE block
+
+    LB  shift e prosecuzione allo stato 36
+
+
+Stato 15
+
+    2 function: function statements .
+    4 statements: statements . statement
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    PRINT        shift e prosecuzione allo stato 8
+    SCAN         shift e prosecuzione allo stato 9
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+    FOR          shift e prosecuzione allo stato 13
+    IF           shift e prosecuzione allo stato 14
+
+    NAME         [riduzione con la regola 2 (function)]
+    INTEGER      [riduzione con la regola 2 (function)]
+    FLOAT        [riduzione con la regola 2 (function)]
+    LB           [riduzione con la regola 2 (function)]
+    PRINT        [riduzione con la regola 2 (function)]
+    SCAN         [riduzione con la regola 2 (function)]
+    INT_TOKEN    [riduzione con la regola 2 (function)]
+    CHAR_TOKEN   [riduzione con la regola 2 (function)]
+    FLOAT_TOKEN  [riduzione con la regola 2 (function)]
+    FOR          [riduzione con la regola 2 (function)]
+    IF           [riduzione con la regola 2 (function)]
+    $default     riduzione con la regola 2 (function)
+
+    statement   prosecuzione allo stato 37
+    expression  prosecuzione allo stato 17
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    forStm      prosecuzione allo stato 21
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+    ifStm       prosecuzione allo stato 24
+    printStm    prosecuzione allo stato 25
+    scanStm     prosecuzione allo stato 26
+
+
+Stato 16
+
+    5 statements: statement .
+
+    $default  riduzione con la regola 5 (statements)
+
+
+Stato 17
+
+    6 statement: expression .
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 6 (statement)
+
+
+Stato 18
+
+   13 expression: term .
+   18 term: term . TOKEN_MUL factor
+   19     | term . TOKEN_DIV factor
+
+    TOKEN_MUL  shift e prosecuzione allo stato 46
+    TOKEN_DIV  shift e prosecuzione allo stato 47
+
+    $default  riduzione con la regola 13 (expression)
+
+
+Stato 19
+
+   20 term: factor .
+
+    $default  riduzione con la regola 20 (term)
+
+
+Stato 20
+
+   14 expression: condition .
+
+    $default  riduzione con la regola 14 (expression)
+
+
+Stato 21
+
+    7 statement: forStm .
+
+    $default  riduzione con la regola 7 (statement)
+
+
+Stato 22
+
+   17 expression: assign .
+
+    $default  riduzione con la regola 17 (expression)
+
+
+Stato 23
+
+   15 expression: init .
+
+    $default  riduzione con la regola 15 (expression)
+
+
+Stato 24
+
+    8 statement: ifStm .
+
+    $default  riduzione con la regola 8 (statement)
+
+
+Stato 25
+
+   10 statement: printStm .
+
+    $default  riduzione con la regola 10 (statement)
+
+
+Stato 26
+
+    9 statement: scanStm .
+
+    $default  riduzione con la regola 9 (statement)
+
+
+Stato 27
+
+   25 factor: NAME LSB . NAME RSB
+   26       | NAME LSB . INTEGER RSB
+
+    NAME     shift e prosecuzione allo stato 48
+    INTEGER  shift e prosecuzione allo stato 49
+
+
+Stato 28
+
+   34 assign: NAME TOKEN_ASS . INTEGER TOKEN_SEM
+   35       | NAME TOKEN_ASS . FLOAT TOKEN_SEM
+   36       | NAME TOKEN_ASS . STRING_TOKEN TOKEN_SEM
+   37       | NAME TOKEN_ASS . castingFunc TOKEN_SEM
+   38       | NAME TOKEN_ASS . expression TOKEN_SEM
+
+    NAME          shift e prosecuzione allo stato 4
+    STRING_TOKEN  shift e prosecuzione allo stato 50
+    INTEGER       shift e prosecuzione allo stato 51
+    FLOAT         shift e prosecuzione allo stato 52
+    LB            shift e prosecuzione allo stato 53
+    INT_TOKEN     shift e prosecuzione allo stato 10
+    CHAR_TOKEN    shift e prosecuzione allo stato 11
+    FLOAT_TOKEN   shift e prosecuzione allo stato 12
+
+    expression   prosecuzione allo stato 54
+    term         prosecuzione allo stato 18
+    factor       prosecuzione allo stato 19
+    condition    prosecuzione allo stato 20
+    assign       prosecuzione allo stato 22
+    init         prosecuzione allo stato 23
+    castingFunc  prosecuzione allo stato 55
+
+
+Stato 29
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   21 factor: LB expression . RB
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    RB         shift e prosecuzione allo stato 56
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+
+Stato 30
+
+   51 printStm: PRINT LB . printStr outTail TOKEN_SEM
+
+    STRING_TOKEN  shift e prosecuzione allo stato 57
+    TOKEN_QUO     shift e prosecuzione allo stato 58
+
+    printStr  prosecuzione allo stato 59
+
+
+Stato 31
+
+   60 scanStm: SCAN LB . TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   61        | SCAN LB . TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   62        | SCAN LB . TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB . TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    TOKEN_QUO  shift e prosecuzione allo stato 60
+
+
+Stato 32
+
+   39 init: INT_TOKEN NAME . TOKEN_ASS expression TOKEN_SEM
+   40     | INT_TOKEN NAME . TOKEN_SEM
+   41     | INT_TOKEN NAME . LSB INTEGER RSB TOKEN_SEM
+
+    LSB        shift e prosecuzione allo stato 61
+    TOKEN_SEM  shift e prosecuzione allo stato 62
+    TOKEN_ASS  shift e prosecuzione allo stato 63
+
+
+Stato 33
+
+   42 init: CHAR_TOKEN TOKEN_MUL . NAME TOKEN_SEM
+   43     | CHAR_TOKEN TOKEN_MUL . NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 64
+
+
+Stato 34
+
+   44 init: FLOAT_TOKEN NAME . TOKEN_ASS FLOAT TOKEN_SEM
+   45     | FLOAT_TOKEN NAME . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 65
+    TOKEN_ASS  shift e prosecuzione allo stato 66
+
+
+Stato 35
+
+   33 forStm: FOR LB . assign expression TOKEN_SEM forIncrement RB block
+
+    NAME  shift e prosecuzione allo stato 67
+
+    assign  prosecuzione allo stato 68
+
+
+Stato 36
+
+   48 ifStm: IF LB . condition RB block
+   49      | IF LB . condition RB block ELSE IF LB condition RB block
+   50      | IF LB . condition RB block ELSE block
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 69
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 70
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 37
+
+    4 statements: statements statement .
+
+    $default  riduzione con la regola 4 (statements)
+
+
+Stato 38
+
+   27 condition: expression GT . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 71
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 39
+
+   31 condition: expression LT . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 72
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 40
+
+   32 condition: expression NE . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 73
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 41
+
+   28 condition: expression EQ . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 74
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 42
+
+   29 condition: expression GE . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 75
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 43
+
+   30 condition: expression LE . expression
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 76
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 44
+
+   11 expression: expression TOKEN_ADD . term
+
+    NAME     shift e prosecuzione allo stato 77
+    INTEGER  shift e prosecuzione allo stato 5
+    FLOAT    shift e prosecuzione allo stato 6
+    LB       shift e prosecuzione allo stato 7
+
+    term    prosecuzione allo stato 78
+    factor  prosecuzione allo stato 19
+
+
+Stato 45
+
+   12 expression: expression TOKEN_SUB . term
+
+    NAME     shift e prosecuzione allo stato 77
+    INTEGER  shift e prosecuzione allo stato 5
+    FLOAT    shift e prosecuzione allo stato 6
+    LB       shift e prosecuzione allo stato 7
+
+    term    prosecuzione allo stato 79
+    factor  prosecuzione allo stato 19
+
+
+Stato 46
+
+   18 term: term TOKEN_MUL . factor
+
+    NAME     shift e prosecuzione allo stato 77
+    INTEGER  shift e prosecuzione allo stato 5
+    FLOAT    shift e prosecuzione allo stato 6
+    LB       shift e prosecuzione allo stato 7
+
+    factor  prosecuzione allo stato 80
+
+
+Stato 47
+
+   19 term: term TOKEN_DIV . factor
+
+    NAME     shift e prosecuzione allo stato 77
+    INTEGER  shift e prosecuzione allo stato 5
+    FLOAT    shift e prosecuzione allo stato 6
+    LB       shift e prosecuzione allo stato 7
+
+    factor  prosecuzione allo stato 81
+
+
+Stato 48
+
+   25 factor: NAME LSB NAME . RSB
+
+    RSB  shift e prosecuzione allo stato 82
+
+
+Stato 49
+
+   26 factor: NAME LSB INTEGER . RSB
+
+    RSB  shift e prosecuzione allo stato 83
+
+
+Stato 50
+
+   36 assign: NAME TOKEN_ASS STRING_TOKEN . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 84
+
+
+Stato 51
+
+   22 factor: INTEGER .
+   34 assign: NAME TOKEN_ASS INTEGER . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 85
+
+    TOKEN_SEM  [riduzione con la regola 22 (factor)]
+    $default   riduzione con la regola 22 (factor)
+
+
+Stato 52
+
+   23 factor: FLOAT .
+   35 assign: NAME TOKEN_ASS FLOAT . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 86
+
+    TOKEN_SEM  [riduzione con la regola 23 (factor)]
+    $default   riduzione con la regola 23 (factor)
+
+
+Stato 53
+
+   21 factor: LB . expression RB
+   64 castingFunc: LB . INT_TOKEN RB NAME
+   65            | LB . FLOAT_TOKEN RB NAME
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 87
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 88
+
+    expression  prosecuzione allo stato 29
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 54
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+   38 assign: NAME TOKEN_ASS expression . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 89
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+
+Stato 55
+
+   37 assign: NAME TOKEN_ASS castingFunc . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 90
+
+
+Stato 56
+
+   21 factor: LB expression RB .
+
+    $default  riduzione con la regola 21 (factor)
+
+
+Stato 57
+
+   52 printStr: STRING_TOKEN .
+
+    $default  riduzione con la regola 52 (printStr)
+
+
+Stato 58
+
+   53 printStr: TOKEN_QUO . IO_INT TOKEN_QUO
+   54         | TOKEN_QUO . IO_STRING TOKEN_QUO
+   55         | TOKEN_QUO . IO_FLOAT TOKEN_QUO
+
+    IO_FLOAT   shift e prosecuzione allo stato 91
+    IO_INT     shift e prosecuzione allo stato 92
+    IO_STRING  shift e prosecuzione allo stato 93
+
+
+Stato 59
+
+   51 printStm: PRINT LB printStr . outTail TOKEN_SEM
+
+    RB         shift e prosecuzione allo stato 94
+    TOKEN_COM  shift e prosecuzione allo stato 95
+
+    outTail  prosecuzione allo stato 96
+
+
+Stato 60
+
+   60 scanStm: SCAN LB TOKEN_QUO . IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   61        | SCAN LB TOKEN_QUO . IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   62        | SCAN LB TOKEN_QUO . IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO . IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    IO_FLOAT   shift e prosecuzione allo stato 97
+    IO_INT     shift e prosecuzione allo stato 98
+    IO_STRING  shift e prosecuzione allo stato 99
+
+
+Stato 61
+
+   41 init: INT_TOKEN NAME LSB . INTEGER RSB TOKEN_SEM
+
+    INTEGER  shift e prosecuzione allo stato 100
+
+
+Stato 62
+
+   40 init: INT_TOKEN NAME TOKEN_SEM .
+
+    $default  riduzione con la regola 40 (init)
+
+
+Stato 63
+
+   39 init: INT_TOKEN NAME TOKEN_ASS . expression TOKEN_SEM
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 101
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 64
+
+   42 init: CHAR_TOKEN TOKEN_MUL NAME . TOKEN_SEM
+   43     | CHAR_TOKEN TOKEN_MUL NAME . TOKEN_ASS STRING_TOKEN TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 102
+    TOKEN_ASS  shift e prosecuzione allo stato 103
+
+
+Stato 65
+
+   45 init: FLOAT_TOKEN NAME TOKEN_SEM .
+
+    $default  riduzione con la regola 45 (init)
+
+
+Stato 66
+
+   44 init: FLOAT_TOKEN NAME TOKEN_ASS . FLOAT TOKEN_SEM
+
+    FLOAT  shift e prosecuzione allo stato 104
+
+
+Stato 67
+
+   34 assign: NAME . TOKEN_ASS INTEGER TOKEN_SEM
+   35       | NAME . TOKEN_ASS FLOAT TOKEN_SEM
+   36       | NAME . TOKEN_ASS STRING_TOKEN TOKEN_SEM
+   37       | NAME . TOKEN_ASS castingFunc TOKEN_SEM
+   38       | NAME . TOKEN_ASS expression TOKEN_SEM
+
+    TOKEN_ASS  shift e prosecuzione allo stato 28
+
+
+Stato 68
+
+   33 forStm: FOR LB assign . expression TOKEN_SEM forIncrement RB block
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 105
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 69
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+
+Stato 70
+
+   14 expression: condition .
+   48 ifStm: IF LB condition . RB block
+   49      | IF LB condition . RB block ELSE IF LB condition RB block
+   50      | IF LB condition . RB block ELSE block
+
+    RB  shift e prosecuzione allo stato 106
+
+    $default  riduzione con la regola 14 (expression)
+
+
+Stato 71
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   27          | expression GT expression .
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 27 (condition)
+
+
+Stato 72
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   31          | expression LT expression .
+   32          | expression . NE expression
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 31 (condition)
+
+
+Stato 73
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+   32          | expression NE expression .
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 32 (condition)
+
+
+Stato 74
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   28          | expression EQ expression .
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 28 (condition)
+
+
+Stato 75
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   29          | expression GE expression .
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 29 (condition)
+
+
+Stato 76
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   30          | expression LE expression .
+   31          | expression . LT expression
+   32          | expression . NE expression
+
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+    $default  riduzione con la regola 30 (condition)
+
+
+Stato 77
+
+   24 factor: NAME .
+   25       | NAME . LSB NAME RSB
+   26       | NAME . LSB INTEGER RSB
+
+    LSB  shift e prosecuzione allo stato 27
+
+    $default  riduzione con la regola 24 (factor)
+
+
+Stato 78
+
+   11 expression: expression TOKEN_ADD term .
+   18 term: term . TOKEN_MUL factor
+   19     | term . TOKEN_DIV factor
+
+    TOKEN_MUL  shift e prosecuzione allo stato 46
+    TOKEN_DIV  shift e prosecuzione allo stato 47
+
+    $default  riduzione con la regola 11 (expression)
+
+
+Stato 79
+
+   12 expression: expression TOKEN_SUB term .
+   18 term: term . TOKEN_MUL factor
+   19     | term . TOKEN_DIV factor
+
+    TOKEN_MUL  shift e prosecuzione allo stato 46
+    TOKEN_DIV  shift e prosecuzione allo stato 47
+
+    $default  riduzione con la regola 12 (expression)
+
+
+Stato 80
+
+   18 term: term TOKEN_MUL factor .
+
+    $default  riduzione con la regola 18 (term)
+
+
+Stato 81
+
+   19 term: term TOKEN_DIV factor .
+
+    $default  riduzione con la regola 19 (term)
+
+
+Stato 82
+
+   25 factor: NAME LSB NAME RSB .
+
+    $default  riduzione con la regola 25 (factor)
+
+
+Stato 83
+
+   26 factor: NAME LSB INTEGER RSB .
+
+    $default  riduzione con la regola 26 (factor)
+
+
+Stato 84
+
+   36 assign: NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM .
+
+    $default  riduzione con la regola 36 (assign)
+
+
+Stato 85
+
+   34 assign: NAME TOKEN_ASS INTEGER TOKEN_SEM .
+
+    $default  riduzione con la regola 34 (assign)
+
+
+Stato 86
+
+   35 assign: NAME TOKEN_ASS FLOAT TOKEN_SEM .
+
+    $default  riduzione con la regola 35 (assign)
+
+
+Stato 87
+
+   39 init: INT_TOKEN . NAME TOKEN_ASS expression TOKEN_SEM
+   40     | INT_TOKEN . NAME TOKEN_SEM
+   41     | INT_TOKEN . NAME LSB INTEGER RSB TOKEN_SEM
+   64 castingFunc: LB INT_TOKEN . RB NAME
+
+    NAME  shift e prosecuzione allo stato 32
+    RB    shift e prosecuzione allo stato 107
+
+
+Stato 88
+
+   44 init: FLOAT_TOKEN . NAME TOKEN_ASS FLOAT TOKEN_SEM
+   45     | FLOAT_TOKEN . NAME TOKEN_SEM
+   65 castingFunc: LB FLOAT_TOKEN . RB NAME
+
+    NAME  shift e prosecuzione allo stato 34
+    RB    shift e prosecuzione allo stato 108
+
+
+Stato 89
+
+   38 assign: NAME TOKEN_ASS expression TOKEN_SEM .
+
+    $default  riduzione con la regola 38 (assign)
+
+
+Stato 90
+
+   37 assign: NAME TOKEN_ASS castingFunc TOKEN_SEM .
+
+    $default  riduzione con la regola 37 (assign)
+
+
+Stato 91
+
+   55 printStr: TOKEN_QUO IO_FLOAT . TOKEN_QUO
+
+    TOKEN_QUO  shift e prosecuzione allo stato 109
+
+
+Stato 92
+
+   53 printStr: TOKEN_QUO IO_INT . TOKEN_QUO
+
+    TOKEN_QUO  shift e prosecuzione allo stato 110
+
+
+Stato 93
+
+   54 printStr: TOKEN_QUO IO_STRING . TOKEN_QUO
+
+    TOKEN_QUO  shift e prosecuzione allo stato 111
+
+
+Stato 94
+
+   56 outTail: RB .
+
+    $default  riduzione con la regola 56 (outTail)
+
+
+Stato 95
+
+   57 outTail: TOKEN_COM . NAME RB
+   58        | TOKEN_COM . NAME LSB NAME RSB RB
+   59        | TOKEN_COM . NAME LSB INTEGER RSB RB
+
+    NAME  shift e prosecuzione allo stato 112
+
+
+Stato 96
+
+   51 printStm: PRINT LB printStr outTail . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 113
+
+
+Stato 97
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT . TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_QUO  shift e prosecuzione allo stato 114
+
+
+Stato 98
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT . TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT . TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    TOKEN_QUO  shift e prosecuzione allo stato 115
+
+
+Stato 99
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING . TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_QUO  shift e prosecuzione allo stato 116
+
+
+Stato 100
+
+   41 init: INT_TOKEN NAME LSB INTEGER . RSB TOKEN_SEM
+
+    RSB  shift e prosecuzione allo stato 117
+
+
+Stato 101
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+   39 init: INT_TOKEN NAME TOKEN_ASS expression . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 118
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+
+Stato 102
+
+   42 init: CHAR_TOKEN TOKEN_MUL NAME TOKEN_SEM .
+
+    $default  riduzione con la regola 42 (init)
+
+
+Stato 103
+
+   43 init: CHAR_TOKEN TOKEN_MUL NAME TOKEN_ASS . STRING_TOKEN TOKEN_SEM
+
+    STRING_TOKEN  shift e prosecuzione allo stato 119
+
+
+Stato 104
+
+   44 init: FLOAT_TOKEN NAME TOKEN_ASS FLOAT . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 120
+
+
+Stato 105
+
+   11 expression: expression . TOKEN_ADD term
+   12           | expression . TOKEN_SUB term
+   27 condition: expression . GT expression
+   28          | expression . EQ expression
+   29          | expression . GE expression
+   30          | expression . LE expression
+   31          | expression . LT expression
+   32          | expression . NE expression
+   33 forStm: FOR LB assign expression . TOKEN_SEM forIncrement RB block
+
+    TOKEN_SEM  shift e prosecuzione allo stato 121
+    GT         shift e prosecuzione allo stato 38
+    LT         shift e prosecuzione allo stato 39
+    NE         shift e prosecuzione allo stato 40
+    EQ         shift e prosecuzione allo stato 41
+    GE         shift e prosecuzione allo stato 42
+    LE         shift e prosecuzione allo stato 43
+    TOKEN_ADD  shift e prosecuzione allo stato 44
+    TOKEN_SUB  shift e prosecuzione allo stato 45
+
+
+Stato 106
+
+   48 ifStm: IF LB condition RB . block
+   49      | IF LB condition RB . block ELSE IF LB condition RB block
+   50      | IF LB condition RB . block ELSE block
+
+    LCB  shift e prosecuzione allo stato 122
+
+    block  prosecuzione allo stato 123
+
+
+Stato 107
+
+   64 castingFunc: LB INT_TOKEN RB . NAME
+
+    NAME  shift e prosecuzione allo stato 124
+
+
+Stato 108
+
+   65 castingFunc: LB FLOAT_TOKEN RB . NAME
+
+    NAME  shift e prosecuzione allo stato 125
+
+
+Stato 109
+
+   55 printStr: TOKEN_QUO IO_FLOAT TOKEN_QUO .
+
+    $default  riduzione con la regola 55 (printStr)
+
+
+Stato 110
+
+   53 printStr: TOKEN_QUO IO_INT TOKEN_QUO .
+
+    $default  riduzione con la regola 53 (printStr)
+
+
+Stato 111
+
+   54 printStr: TOKEN_QUO IO_STRING TOKEN_QUO .
+
+    $default  riduzione con la regola 54 (printStr)
+
+
+Stato 112
+
+   57 outTail: TOKEN_COM NAME . RB
+   58        | TOKEN_COM NAME . LSB NAME RSB RB
+   59        | TOKEN_COM NAME . LSB INTEGER RSB RB
+
+    RB   shift e prosecuzione allo stato 126
+    LSB  shift e prosecuzione allo stato 127
+
+
+Stato 113
+
+   51 printStm: PRINT LB printStr outTail TOKEN_SEM .
+
+    $default  riduzione con la regola 51 (printStm)
+
+
+Stato 114
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO . TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_COM  shift e prosecuzione allo stato 128
+
+
+Stato 115
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO . TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT TOKEN_QUO . TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    TOKEN_COM  shift e prosecuzione allo stato 129
+
+
+Stato 116
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO . TOKEN_COM TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_COM  shift e prosecuzione allo stato 130
+
+
+Stato 117
+
+   41 init: INT_TOKEN NAME LSB INTEGER RSB . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 131
+
+
+Stato 118
+
+   39 init: INT_TOKEN NAME TOKEN_ASS expression TOKEN_SEM .
+
+    $default  riduzione con la regola 39 (init)
+
+
+Stato 119
+
+   43 init: CHAR_TOKEN TOKEN_MUL NAME TOKEN_ASS STRING_TOKEN . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 132
+
+
+Stato 120
+
+   44 init: FLOAT_TOKEN NAME TOKEN_ASS FLOAT TOKEN_SEM .
+
+    $default  riduzione con la regola 44 (init)
+
+
+Stato 121
+
+   33 forStm: FOR LB assign expression TOKEN_SEM . forIncrement RB block
+
+    NAME  shift e prosecuzione allo stato 133
+
+    forIncrement  prosecuzione allo stato 134
+
+
+Stato 122
+
+   47 block: LCB . statements RCB
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    PRINT        shift e prosecuzione allo stato 8
+    SCAN         shift e prosecuzione allo stato 9
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+    FOR          shift e prosecuzione allo stato 13
+    IF           shift e prosecuzione allo stato 14
+
+    statements  prosecuzione allo stato 135
+    statement   prosecuzione allo stato 16
+    expression  prosecuzione allo stato 17
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    forStm      prosecuzione allo stato 21
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+    ifStm       prosecuzione allo stato 24
+    printStm    prosecuzione allo stato 25
+    scanStm     prosecuzione allo stato 26
+
+
+Stato 123
+
+   48 ifStm: IF LB condition RB block .
+   49      | IF LB condition RB block . ELSE IF LB condition RB block
+   50      | IF LB condition RB block . ELSE block
+
+    ELSE  shift e prosecuzione allo stato 136
+
+    $default  riduzione con la regola 48 (ifStm)
+
+
+Stato 124
+
+   64 castingFunc: LB INT_TOKEN RB NAME .
+
+    $default  riduzione con la regola 64 (castingFunc)
+
+
+Stato 125
+
+   65 castingFunc: LB FLOAT_TOKEN RB NAME .
+
+    $default  riduzione con la regola 65 (castingFunc)
+
+
+Stato 126
+
+   57 outTail: TOKEN_COM NAME RB .
+
+    $default  riduzione con la regola 57 (outTail)
+
+
+Stato 127
+
+   58 outTail: TOKEN_COM NAME LSB . NAME RSB RB
+   59        | TOKEN_COM NAME LSB . INTEGER RSB RB
+
+    NAME     shift e prosecuzione allo stato 137
+    INTEGER  shift e prosecuzione allo stato 138
+
+
+Stato 128
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM . TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_E  shift e prosecuzione allo stato 139
+
+
+Stato 129
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM . TOKEN_E NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM . TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM
+
+    TOKEN_E  shift e prosecuzione allo stato 140
+
+
+Stato 130
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM . TOKEN_E NAME RB TOKEN_SEM
+
+    TOKEN_E  shift e prosecuzione allo stato 141
+
+
+Stato 131
+
+   41 init: INT_TOKEN NAME LSB INTEGER RSB TOKEN_SEM .
+
+    $default  riduzione con la regola 41 (init)
+
+
+Stato 132
+
+   43 init: CHAR_TOKEN TOKEN_MUL NAME TOKEN_ASS STRING_TOKEN TOKEN_SEM .
+
+    $default  riduzione con la regola 43 (init)
+
+
+Stato 133
+
+   46 forIncrement: NAME . TOKEN_ADD TOKEN_ADD
+
+    TOKEN_ADD  shift e prosecuzione allo stato 142
+
+
+Stato 134
+
+   33 forStm: FOR LB assign expression TOKEN_SEM forIncrement . RB block
+
+    RB  shift e prosecuzione allo stato 143
+
+
+Stato 135
+
+    4 statements: statements . statement
+   47 block: LCB statements . RCB
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    RCB          shift e prosecuzione allo stato 144
+    PRINT        shift e prosecuzione allo stato 8
+    SCAN         shift e prosecuzione allo stato 9
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+    FOR          shift e prosecuzione allo stato 13
+    IF           shift e prosecuzione allo stato 14
+
+    statement   prosecuzione allo stato 37
+    expression  prosecuzione allo stato 17
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 20
+    forStm      prosecuzione allo stato 21
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+    ifStm       prosecuzione allo stato 24
+    printStm    prosecuzione allo stato 25
+    scanStm     prosecuzione allo stato 26
+
+
+Stato 136
+
+   49 ifStm: IF LB condition RB block ELSE . IF LB condition RB block
+   50      | IF LB condition RB block ELSE . block
+
+    LCB  shift e prosecuzione allo stato 122
+    IF   shift e prosecuzione allo stato 145
+
+    block  prosecuzione allo stato 146
+
+
+Stato 137
+
+   58 outTail: TOKEN_COM NAME LSB NAME . RSB RB
+
+    RSB  shift e prosecuzione allo stato 147
+
+
+Stato 138
+
+   59 outTail: TOKEN_COM NAME LSB INTEGER . RSB RB
+
+    RSB  shift e prosecuzione allo stato 148
+
+
+Stato 139
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E . NAME RB TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 149
+
+
+Stato 140
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E . NAME RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E . NAME LSB NAME RSB RB TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 150
+
+
+Stato 141
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E . NAME RB TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 151
+
+
+Stato 142
+
+   46 forIncrement: NAME TOKEN_ADD . TOKEN_ADD
+
+    TOKEN_ADD  shift e prosecuzione allo stato 152
+
+
+Stato 143
+
+   33 forStm: FOR LB assign expression TOKEN_SEM forIncrement RB . block
+
+    LCB  shift e prosecuzione allo stato 122
+
+    block  prosecuzione allo stato 153
+
+
+Stato 144
+
+   47 block: LCB statements RCB .
+
+    $default  riduzione con la regola 47 (block)
+
+
+Stato 145
+
+   49 ifStm: IF LB condition RB block ELSE IF . LB condition RB block
+
+    LB  shift e prosecuzione allo stato 154
+
+
+Stato 146
+
+   50 ifStm: IF LB condition RB block ELSE block .
+
+    $default  riduzione con la regola 50 (ifStm)
+
+
+Stato 147
+
+   58 outTail: TOKEN_COM NAME LSB NAME RSB . RB
+
+    RB  shift e prosecuzione allo stato 155
+
+
+Stato 148
+
+   59 outTail: TOKEN_COM NAME LSB INTEGER RSB . RB
+
+    RB  shift e prosecuzione allo stato 156
+
+
+Stato 149
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME . RB TOKEN_SEM
+
+    RB  shift e prosecuzione allo stato 157
+
+
+Stato 150
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME . RB TOKEN_SEM
+   63        | SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME . LSB NAME RSB RB TOKEN_SEM
+
+    RB   shift e prosecuzione allo stato 158
+    LSB  shift e prosecuzione allo stato 159
+
+
+Stato 151
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME . RB TOKEN_SEM
+
+    RB  shift e prosecuzione allo stato 160
+
+
+Stato 152
+
+   46 forIncrement: NAME TOKEN_ADD TOKEN_ADD .
+
+    $default  riduzione con la regola 46 (forIncrement)
+
+
+Stato 153
+
+   33 forStm: FOR LB assign expression TOKEN_SEM forIncrement RB block .
+
+    $default  riduzione con la regola 33 (forStm)
+
+
+Stato 154
+
+   49 ifStm: IF LB condition RB block ELSE IF LB . condition RB block
+
+    NAME         shift e prosecuzione allo stato 4
+    INTEGER      shift e prosecuzione allo stato 5
+    FLOAT        shift e prosecuzione allo stato 6
+    LB           shift e prosecuzione allo stato 7
+    INT_TOKEN    shift e prosecuzione allo stato 10
+    CHAR_TOKEN   shift e prosecuzione allo stato 11
+    FLOAT_TOKEN  shift e prosecuzione allo stato 12
+
+    expression  prosecuzione allo stato 69
+    term        prosecuzione allo stato 18
+    factor      prosecuzione allo stato 19
+    condition   prosecuzione allo stato 161
+    assign      prosecuzione allo stato 22
+    init        prosecuzione allo stato 23
+
+
+Stato 155
+
+   58 outTail: TOKEN_COM NAME LSB NAME RSB RB .
+
+    $default  riduzione con la regola 58 (outTail)
+
+
+Stato 156
+
+   59 outTail: TOKEN_COM NAME LSB INTEGER RSB RB .
+
+    $default  riduzione con la regola 59 (outTail)
+
+
+Stato 157
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 162
+
+
+Stato 158
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 163
+
+
+Stato 159
+
+   63 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB . NAME RSB RB TOKEN_SEM
+
+    NAME  shift e prosecuzione allo stato 164
+
+
+Stato 160
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 165
+
+
+Stato 161
+
+   14 expression: condition .
+   49 ifStm: IF LB condition RB block ELSE IF LB condition . RB block
+
+    RB  shift e prosecuzione allo stato 166
+
+    $default  riduzione con la regola 14 (expression)
+
+
+Stato 162
+
+   62 scanStm: SCAN LB TOKEN_QUO IO_FLOAT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM .
+
+    $default  riduzione con la regola 62 (scanStm)
+
+
+Stato 163
+
+   60 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM .
+
+    $default  riduzione con la regola 60 (scanStm)
+
+
+Stato 164
+
+   63 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME . RSB RB TOKEN_SEM
+
+    RSB  shift e prosecuzione allo stato 167
+
+
+Stato 165
+
+   61 scanStm: SCAN LB TOKEN_QUO IO_STRING TOKEN_QUO TOKEN_COM TOKEN_E NAME RB TOKEN_SEM .
+
+    $default  riduzione con la regola 61 (scanStm)
+
+
+Stato 166
+
+   49 ifStm: IF LB condition RB block ELSE IF LB condition RB . block
+
+    LCB  shift e prosecuzione allo stato 122
+
+    block  prosecuzione allo stato 168
+
+
+Stato 167
+
+   63 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB . RB TOKEN_SEM
+
+    RB  shift e prosecuzione allo stato 169
+
+
+Stato 168
+
+   49 ifStm: IF LB condition RB block ELSE IF LB condition RB block .
+
+    $default  riduzione con la regola 49 (ifStm)
+
+
+Stato 169
+
+   63 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB . TOKEN_SEM
+
+    TOKEN_SEM  shift e prosecuzione allo stato 170
+
+
+Stato 170
+
+   63 scanStm: SCAN LB TOKEN_QUO IO_INT TOKEN_QUO TOKEN_COM TOKEN_E NAME LSB NAME RSB RB TOKEN_SEM .
+
+    $default  riduzione con la regola 63 (scanStm)

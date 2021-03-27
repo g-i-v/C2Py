@@ -1,0 +1,45 @@
+--------------------------TEST 1 GOOD
+
+- definizione e relativa assegnazione di valori a variabili dei tre tipi inclusi: int, char e float.
+- applicazione del casting nel caso di int e float
+- 2 cicli for annidati
+- funzione di standard output relativa ad una string (printf)
+- funzioni di standard output per la stampa di variabili 
+
+
+--------------------------TEST 1 WRONG 
+
+simile a 1 ma con introduzione di 2 errori: 
+
+- il ciclo for ha l'incremento di una variabile differente da quelle utilizzate per il controllo delle iterazioni
+- la stampa di una stringa viene effettuata utilizzando "%d" anzichè "%s"
+
+<Line 16> For arguments have different variables 
+<Line 22> Variable is not an integer
+
+
+--------------------------TEST 2 GOOD
+
+- definizione interi e vettore
+- ciclo for per caricamento vettore da tastiera
+- ciclo for per stampa valori caricati 
+- costrutto di diramazione di tipo if - else if con controllo su elemento vettore
+- espressione algebrica
+- stampa 
+
+--------------------------TEST 2 WRONG 
+
+simile a 2 ma con introduzione di un errore: 
+
+- viene effettuato un casting con successiva somma fra intero e float
+
+<Line 27> Type of terms is not the same
+
+
+
+
+
+
+
+
+
